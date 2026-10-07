@@ -13,7 +13,7 @@ void setup() {
   digitalWrite(MOTOR_IN2, LOW);
   pinMode(BUTTON_PIN, INPUT_PULLUP);
   digitalWrite(DRIVER_SLEEP_PIN, HIGH);
-  delay(2); 
+  delay(2); // One-time driver wake-up interval.
 }
 void loop() {
   const bool buttonPressed = (digitalRead(BUTTON_PIN) == LOW);
