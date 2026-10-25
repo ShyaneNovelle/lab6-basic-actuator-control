@@ -1,22 +1,45 @@
 #include <Arduino.h>
-const uint8_t BUTTON_PIN = 23;
-const uint8_t MOTOR_IN1 = 21;
-const uint8_t MOTOR_IN2 = 22;
-const uint8_t DRIVER_SLEEP_PIN = 27;
+
+const uint8_t ENA = 23;
+const uint8_t IN1 = 18;
+const uint8_t IN2 = 19;
+const uint8_t BTN = 27;
+
+bool lastPressed = false;
 
 void setup() {
-  pinMode(DRIVER_SLEEP_PIN, OUTPUT);
-  digitalWrite(DRIVER_SLEEP_PIN, LOW);
-  pinMode(MOTOR_IN1, OUTPUT);
-  pinMode(MOTOR_IN2, OUTPUT);
-  digitalWrite(MOTOR_IN1, LOW);
-  digitalWrite(MOTOR_IN2, LOW);
-  pinMode(BUTTON_PIN, INPUT_PULLUP);
-  digitalWrite(DRIVER_SLEEP_PIN, HIGH);
-  delay(2); // One-time driver wake-up interval.
+  Serial.begin(115200);
+
+  pinMode(ENA, OUTPUT);
+  pinMode(IN1, OUTPUT);
+  pinMode(IN2, OUTPUT);
+  pinMode(BTN, INPUT_PULLUP);   
+
+  digitalWrite(ENA, LOW);
+  digitalWrite(IN1, LOW);
+  digitalWrite(IN2, LOW);
+
+  Serial.println("Ready. Hold the button to run the motor.");
 }
+
 void loop() {
-  const bool buttonPressed = (digitalRead(BUTTON_PIN) == LOW);
-  digitalWrite(MOTOR_IN2, LOW);
-  digitalWrite(MOTOR_IN1, buttonPressed ? HIGH : LOW);
+  const bool pressed = (digitalRead(BTN) == LOW);
+
+  if (pressed != lastPressed) {
+    lastPressed = pressed;
+
+    if (pressed) {
+      digitalWrite(IN1, HIGH);   
+      digitalWrite(IN2, LOW);
+      digitalWrite(ENA, HIGH);   
+      Serial.println("Motor ON");
+    } else {
+      digitalWrite(ENA, LOW);    
+      digitalWrite(IN1, LOW);
+      digitalWrite(IN2, LOW);
+      Serial.println("Motor OFF (coast)");
+    }
+  }
+
+  delay(20);   
 }
