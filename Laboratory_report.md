@@ -1,9 +1,9 @@
 # Laboratory Report: Button-Controlled DC Motor with ESP32 and L298N
 
-**Name:** [FILL IN]
-**Course and section:** [FILL IN]
-**Instructor:** [FILL IN]
-**Date:** October 25, 2026
+**Name:** Shyane Novelle R. Canayan
+**Course and section:**BSCA - B186
+**Instructor:** Sir Jom Villaneva
+**Date:** October 8, 2026
 
 ---
 
@@ -50,7 +50,8 @@ IN3, IN4 and ENB are not used.
 
 ### 3.3 Wiring evidence
 
-![Figure 1: Assembled circuit. ESP32 on the breadboard (USB powered), L298N module with its power LED on, push button on the breadboard, and the motor with the blue fan blade connected to the OUT terminals.](media/wiring_top.jpg)
+<img width="3060" height="4080" alt="a0b3a085-1a32-4241-b9cb-39e701a09c27" src="https://github.com/user-attachments/assets/06ac9916-531e-499f-8e04-71086058a2fa" />
+
 
 *Figure 1: The assembled circuit.*
 
@@ -61,12 +62,12 @@ IN3, IN4 and ENB are not used.
 | Item | Value |
 |---|---|
 | Motor | Small DC motor from a mini fan, with a blue fan blade (Figure 1) |
-| Part number | [FILL IN: read it from the motor can] |
-| Rated voltage (datasheet) | [FILL IN] V |
-| Stall current (datasheet) | [FILL IN] A |
-| Datasheet link | [FILL IN] |
+| Part number | 130-size DC motor |
+| Rated voltage (datasheet) | 3V-6V |
+| Stall current (datasheet) | ~0.8V-1.2A |
 
-The supply and driver were chosen against these two values. The battery pack gives about 6 V nominal, and the L298N drops about 2 V across its output stage, so the motor sees roughly 4 V. The stall current must stay below the L298N limit of 2 A per channel. [FILL IN: one sentence comparing your datasheet values with 4 V and 2 A.]
+
+The supply and driver were chosen against these two values. The battery pack gives about 6 V nominal, and the L298N drops about 2 V across its output stage, so the motor sees roughly 4 V. The stall current must stay below the L298N limit of 2 A per channel. The motor's rated voltage range of 3V–6V comfortably accommodates the ~4 V delivered across the L298N output, and its ~0.8A–1.2A stall current remains safely below the driver's 2 A per-channel limit.
 
 ### 4.2 Breakout (Task 2)
 
@@ -79,7 +80,6 @@ The supply and driver were chosen against these two values. The battery pack giv
 | Voltage drop across the bridge | About 2 V typical, so the motor sees less than the supply |
 | Logic input HIGH threshold | At least 2.3 V, so the ESP32's 3.3 V outputs can drive IN1, IN2 and ENA directly |
 | Datasheet | ST L298: https://www.st.com/resource/en/datasheet/l298.pdf |
-| Module vendor page | [FILL IN if you have one] |
 
 ## 5. Software
 
@@ -145,7 +145,7 @@ Motor ON
 Motor OFF (coast)
 ```
 
-![Figure 2: Serial Monitor at 115200 baud on COM4 showing Motor ON and Motor OFF (coast) alternating with each press and release.](media/serial_monitor.png)
+<img width="640" height="351" alt="Screenshot 2026-10-25 094753" src="https://github.com/user-attachments/assets/eae179a7-8fdb-4249-b98b-231b140a5fd0" />
 
 *Figure 2: Serial Monitor output.*
 
@@ -159,7 +159,11 @@ Motor OFF (coast)
 
 The motor only runs while the button is pressed. Each press printed exactly one Motor ON line and each release printed one Motor OFF (coast) line, so the button and the code behave as intended. On release, ENA goes LOW and disables the output stage, so the motor is not braked and slows down freely. That is the difference between coasting and braking on this driver (see Section 8).
 
-Demo video: `media/demo.mp4`
+**Demo Video**: 
+
+https://github.com/user-attachments/assets/9d297811-9ef1-4e93-a341-d726502b2a9c
+
+
 
 ### 7.3 Problems encountered
 
@@ -213,42 +217,15 @@ The task refers to AIN1, AIN2, nSLEEP and VM, which are pins of a DRV8833-style 
 
 I built the ESP32 and L298N driver circuit, uploaded the sketch, and verified the button-controlled run and coast behavior. The motor runs only while the push button is held and coasts when it is released. I identified the roles of IN1, IN2, ENA, the 12V motor supply and the common ground, and related them to AIN1, AIN2, nSLEEP, VM and common ground from the task. I did not perform the optional PWM extension.
 
-## 12. Submission contents
-
-| Item | File or section |
-|---|---|
-| Source code | `motor_button.ino` (also Appendix A) |
-| Short project description | `README.md` |
-| Motor datasheet link | Section 4.1 |
-| Breakout datasheet link | Section 4.2 |
-| Wiring evidence | Figure 1, `media/wiring_top.jpg` |
-| Observed behavior | Figure 2, `media/serial_monitor.png`, and Section 7 |
-| Demo video | `media/demo.mp4` |
-
 ## References
 
 - ST L298 datasheet: https://www.st.com/resource/en/datasheet/l298.pdf
-- Motor datasheet: [FILL IN]
-- L298N module vendor page: [FILL IN if available]
+- Motor datasheet: https://www.adafruit.com/product/711 (Standard 130-size DC Hobby Motor)
+- L298N module vendor page: https://components101.com/modules/l293n-motor-driver-module
 
 ## Appendix A: Source code
 
 ```cpp
-// ESP32 (ESP-WROOM-32 DevKit V1) + L298N: hold the button to run the motor
-//
-// WIRING
-//   ESP32 GPIO23 -> L298N ENA        (remove the ENA jumper)
-//   ESP32 GPIO18 -> L298N IN1
-//   ESP32 GPIO19 -> L298N IN2
-//   Button leg 1 -> ESP32 GPIO27
-//   Button leg 2 -> ESP32 GND        (use diagonal legs on a 4-pin button)
-//   ESP32 VIN    -> L298N 5V         (remove the 5V-EN jumper)
-//   ESP32 GND    -> L298N GND        (same terminal as battery -)
-//   Battery +    -> L298N 12V
-//   Battery -    -> L298N GND
-//   Motor        -> L298N OUT1 and OUT2
-//   IN3, IN4 unused. ENB jumper can stay on.
-//   ESP32 must be powered by USB so VIN supplies 5V.
 
 #include <Arduino.h>
 
