@@ -1,7 +1,7 @@
 # Laboratory Report: Button-Controlled DC Motor with ESP32 and L298N
 
 **Name:** Shyane Novelle R. Canayan
-**Course and section:**BSCA - B186
+**Course and section:** BSCA - B186
 **Instructor:** Sir Jom Villaneva
 **Date:** October 8, 2026
 
