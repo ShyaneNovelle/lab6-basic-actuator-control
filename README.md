@@ -2,7 +2,6 @@
 
 Lab task: build the driver circuit and run Example 7 (button-controlled run/coast).
 
-Fill in the `[FILL IN]` items (motor details and datasheet link) before submitting.
 
 ## What it does
 
@@ -18,7 +17,7 @@ An ESP32 (ESP-WROOM-32 DevKit V1) drives a small DC motor through an L298N dual 
 |---|---|
 | Microcontroller | ESP32 DevKit V1 (ESP-WROOM-32), powered over USB |
 | Motor driver | L298N dual H-bridge module |
-| Motor | Small DC motor with a blue fan blade. Part number: [FILL IN] |
+| Motor | Small DC motor with a blue fan blade. Part number: 130 DC Motor |
 | Motor supply | 4 x AAA carbon batteries (1.5 V each) in series, about 6 V nominal |
 | Input | Push button, active LOW (internal pull-up) |
 
@@ -81,9 +80,11 @@ Motor OFF (coast)
 
 Observed behavior: the motor turns on only while the button is held and spins fast. When the button is released, ENA goes LOW and the motor coasts to a stop. Every press and release printed exactly one message.
 
-![Assembled circuit](media/wiring_top.jpg)
+<img width="3060" height="4080" alt="a0b3a085-1a32-4241-b9cb-39e701a09c27" src="https://github.com/user-attachments/assets/10dadf4b-8f99-4660-aff2-44125b3879ea" />
 
-![Serial Monitor output](media/serial_monitor.png)
+
+<img width="640" height="351" alt="Screenshot 2026-10-25 094753" src="https://github.com/user-attachments/assets/8ce52b3c-c7c6-4742-a416-16e5b1858de9" />
+
 
 The optional potentiometer PWM extension was not done.
 
@@ -98,21 +99,9 @@ The task uses names from DRV8833-style breakouts. On the L298N module they map a
 | VM | 12V terminal (motor supply) |
 | Common ground | GND terminal shared by battery and ESP32 |
 
-## Files
-
-```
-motor_button.ino        source code
-README.md               this file
-laboratory_report.md    laboratory report
-media/
-  wiring_top.jpg        photo of the actual wiring
-  serial_monitor.png    Serial Monitor screenshot
-  demo.mp4              video of button press and release (add your own)
-```
-
 ## Datasheets
 
 - Breakout chip (ST L298): https://www.st.com/resource/en/datasheet/l298.pdf
-- Motor datasheet: [FILL IN]
-  - Rated voltage: [FILL IN]
-  - Stall current: [FILL IN]
+- Motor datasheet: Generic 130 DC Motor Specs
+  - Rated voltage: 3V-6V DC
+  - Stall current: ~0.8A - 1.2A @ 3V-6V
